@@ -19,6 +19,13 @@ export default new Router({
       name: 'Chat',
       component: ChatView,
       props: true,
+      beforeEnter: (to, from, next) => {
+        if (to.params.name) {
+          next();
+        } else {
+          next(from);
+        }
+      },
     },
   ],
 });
