@@ -3,7 +3,7 @@
     <h2 class="center teal-text">Chaterino</h2>
     <div class="card">
       <div class="card-content">
-        <ul class="messages">
+        <ul class="messages" v-chat-scroll>
           <li class="message" v-for="message in messages" :key="message.id">
             <span class="teal-text">{{message.name}}</span>
             <span class="grey-text text-darken-3">{{message.content}}</span>
@@ -19,6 +19,7 @@
 </template>
 <script>
 import db from '@/firebase/init';
+import moment from 'moment';
 
 import NewMessage from '@/components/NewMessage.vue';
 
@@ -43,7 +44,7 @@ export default {
             id: doc.id,
             name: doc.data().name,
             content: doc.data().content,
-            timestamp: doc.data().timestamp,
+            timestamp: moment(doc.data().timestamp).format('lll'),
           });
         }
       });
@@ -60,6 +61,20 @@ export default {
   .card {
     .card-content {
       .messages {
+        max-height: 300px;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+          width: 5px;
+          border: none;
+        }
+        &::-webkit-scrollbar-track {
+          background: #ddd;
+          border-radius: 45px;
+        }
+        &::-webkit-scrollbar-thumb {
+          background: #aaa;
+          border-radius: 45px;
+        }
         .message {
           span {
             font-size: 1.4em;
@@ -70,7 +85,7 @@ export default {
           }
           .time {
             display: block;
-            font-size: 1.2em;
+            font-size: 0.8em;
           }
         }
       }
